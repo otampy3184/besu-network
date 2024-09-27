@@ -1,0 +1,49 @@
+services:
+  besu1:
+    image: hyperledger/besu:23.10-arm64
+    container_name: besu1
+    volumes:
+      - ./node1:/mnt:consistent
+    command: [ "--config-file=/mnt/config/config.toml", "--static-nodes-file=/mnt/data/static-nodes.json" ]
+    tty: true
+    ports:
+      - "18451:18451"
+      - "18541:18541"
+    networks:
+      besu_local:
+        ipv4_address: 172.28.0.2
+  besu2:
+    image: hyperledger/besu:23.10-arm64
+    container_name: besu2
+    volumes:
+      - ./node2:/mnt:consistent
+    command: [ "--config-file=/mnt/config/config.toml", "--static-nodes-file=/mnt/data/static-nodes.json" ]
+    tty: true
+    ports:
+      - "18452:18452"
+      - "18542:18542"
+    networks:
+      besu_local:
+        ipv4_address: 172.28.0.3
+  besu3:
+    image: hyperledger/besu:23.10-arm64
+    container_name: besu3
+    volumes:
+      - ./node3:/mnt:consistent
+    command: [ "--config-file=/mnt/config/config.toml", "--static-nodes-file=/mnt/data/static-nodes.json" ]
+    tty: true
+    ports:
+      - "18453:18453"
+      - "18543:18543"
+    networks:
+      besu_local:
+        ipv4_address: 172.28.0.4
+networks:
+  besu_local:
+    driver: bridge
+    name: besu_local
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+    internal: false
+    external: false
